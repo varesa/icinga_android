@@ -41,7 +41,7 @@ class IcingaViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onCreate() {
         try {
-            this.url = new URL("http://icinga_export.esav.dy.fi/services");
+            this.url = new URL("http://icinga-export.esav.dy.fi/services");
         } catch (IOException e) {
             e.printStackTrace();
         }
