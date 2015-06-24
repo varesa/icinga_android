@@ -42,7 +42,6 @@ class IcingaViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     public void onCreate() {
         try {
             this.url = new URL("http://icinga_export.esav.dy.fi/services");
-            this.connection = this.url.openConnection();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +51,10 @@ class IcingaViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onDataSetChanged() {
         try {
-            InputStream in = new BufferedInputStream(this.connection.getInputStream());
+            System.out.println(this.url.toString());
+            System.out.println(this.url.getProtocol());
+            System.out.println(this.url.getHost());
+            InputStream in = new BufferedInputStream(this.url.openConnection().getInputStream());
             JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
             this.services.addAll(ServiceObject.parseJSON(reader));
             this.servicesNotOK = this.services.filterNotOK();
@@ -70,7 +72,11 @@ class IcingaViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return this.servicesNotOK.size()+1;
+        if(this.services == null || this.servicesNotOK == null) {
+            return 0;
+        } else {
+            return this.servicesNotOK.size() + 1;
+        }
     }
 
     @Override
