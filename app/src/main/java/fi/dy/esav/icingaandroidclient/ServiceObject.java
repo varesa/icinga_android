@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by esa on 24.6.2015.
- */
 public class ServiceObject {
     public String host_name = "";
     public String service_name = "";
@@ -20,42 +17,45 @@ public class ServiceObject {
         this.service_status = service_status;
     }
 
-    static List<ServiceObject> parseJSON(JsonReader reader) throws IOException {
-        List<ServiceObject> services = new LinkedList<ServiceObject>();
+    static ServiceObjectList parseJSON(JsonReader reader) throws IOException {
+        ServiceObjectList services = new ServiceObjectList();
         reader.beginObject();
         if(reader.nextName().equals("services")) {
             reader.beginArray();
             while (reader.hasNext()) {
-                reader.beginObject();
-
-                String host_name = "None";
-                String service_name = "None";
-                int service_status = -1;
-                while(reader.hasNext()) {
-
-                    String name = reader.nextName();
-                    switch (name) {
-                        case "host_name":
-                            host_name = reader.nextString();
-                            break;
-                        case "service_name":
-                            service_name = reader.nextString();
-                            break;
-                        case "service_state":
-                            service_status = reader.nextInt();
-                            break;
-                        default:
-                            reader.nextString(); // Invalid key, try removing a string token
-                    }
-                }
-
-                services.add(new ServiceObject(host_name, service_name, service_status));
-                reader.endObject();
+                services.add(JSONParseSingleService(reader));
             }
             reader.endArray();
         }
         reader.endObject();
 
         return services;
+    }
+
+    private static ServiceObject JSONParseSingleService(JsonReader reader) throws IOException {
+        String host_name = "None";
+        String service_name = "None";
+        int service_status = -1;
+
+        reader.beginObject();
+        while(reader.hasNext()) {
+
+            String name = reader.nextName();
+            switch (name) {
+                case "host_name":
+                    host_name = reader.nextString();
+                    break;
+                case "service_name":
+                    service_name = reader.nextString();
+                    break;
+                case "service_state":
+                    service_status = reader.nextInt();
+                    break;
+                default:
+                    reader.nextString(); // Invalid key, try removing a string token
+            }
+        }
+        reader.endObject();
+        return new ServiceObject(host_name, service_name, service_status);
     }
 }
