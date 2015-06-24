@@ -3,8 +3,6 @@ package fi.dy.esav.icingaandroidclient;
 import android.util.JsonReader;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 public class ServiceObject {
     public String host_name = "";
