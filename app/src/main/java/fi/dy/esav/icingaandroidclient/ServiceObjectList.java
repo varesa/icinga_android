@@ -16,7 +16,7 @@ public class ServiceObjectList extends LinkedList<ServiceObject> {
     public ServiceObjectList filterOK() {
         ServiceObjectList servicesOK = new ServiceObjectList();
         for(ServiceObject service: this) {
-            if(service.service_status != 0) {
+            if(service.service_status == 0) {
                 servicesOK.add(service);
             }
         }
