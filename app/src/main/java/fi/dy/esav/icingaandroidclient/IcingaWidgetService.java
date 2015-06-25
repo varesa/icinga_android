@@ -11,12 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.List;
 
-/**
- * Created by esa on 23.6.2015.
- */
 public class IcingaWidgetService extends RemoteViewsService{
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -27,7 +22,6 @@ public class IcingaWidgetService extends RemoteViewsService{
 class IcingaViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private Context context;
     private URL url;
-    private URLConnection connection;
     private ServiceObjectList services;
     private ServiceObjectList servicesNotOK;
 
