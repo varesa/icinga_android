@@ -29,7 +29,6 @@ class IcingaViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     public IcingaViewsFactory(Context context, Intent intent) {
         this.context = context;
-        System.out.println("Constructor");
     }
 
     @Override
@@ -45,16 +44,10 @@ class IcingaViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onDataSetChanged() {
         try {
-            System.out.println(this.url.toString());
-            System.out.println(this.url.getProtocol());
-            System.out.println(this.url.getHost());
             InputStream in = new BufferedInputStream(this.url.openConnection().getInputStream());
             JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
             this.services.addAll(ServiceObject.parseJSON(reader));
             this.servicesNotOK = this.services.filterNotOK();
-            for(ServiceObject service : this.servicesNotOK) {
-                System.out.println(service.host_name + "-" + service.service_name + ": " + service.service_status);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
